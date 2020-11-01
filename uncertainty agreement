@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <link rel="styles.css" href="C:\Users\asus\test_graphing\styles.css">
+</head>
+
+<body>
+    <div id='main'>
+        <h2>I. Background</h2>
+        <p>In experimental science, the goal is about making measurements. Any physical quantity, you're trying to
+            measure has a 'true' value (theoretical value), for example gravity is 9.81 m/s^2. However, when conducting
+            an experiment to measure gravity, you may not get that true value, because all real-life measuring devices
+            are imperfect. 
+            <ul>
+                <li>a. For instance, sometimes your measurement tool may be improperly calibrated. This kind of
+                    error is a systemtic error, where your measurements are skew in one direction.</li>
+                <li>b. Other times, it can be different in both directions. This is called random error.</li>
+            </ul>
+            Theses errors are factored into your data and displayed graphically as error bars. These error bars, can be
+            in both directions (X and Y), or just one direction (X or Y). They illustrate a range where most of your
+            measurements falls within.
+        </p>
+        <h2>II. Uncertainties and Final Results</h2>
+        <p> Using the uncertainties, mathematically, if two quantities a and b, with uncertainties ∆a
+            and ∆b are compared, they can be considered to agree within
+            their uncertainties if: <br>
+            |a − b| ≤ ∆a + ∆b <br>
+            A value with no uncertainty given can be assumed to have an
+            uncertainty of zero.<br>
+        </p>
+        <p>
+            The following tool, show a visual representation if two quantities agree. <br>
+            <b>Note: For this application, all values must be filled, if there's is no uncertainty in a particular value, put in 0.</b>
+        </p>
+    </div>
+    <div id='form'>
+    <form>
+        Experimental Value: <input id="A" type="number"/> 
+        +/-: <input id="dA" type="number"/><br>
+        Theoretical Value: <input id="B" type="number"/>
+        +/-: <input id="dB" type="number"/><br>
+        <input type="button" value ='Submit' onClick="drawChart();"><br>
+    </form>
+    </div>
+    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+</body>
+
+<script>
+    function drawChart() {
+        var A = document.getElementById("A").value;
+        var dA = document.getElementById("dA").value;
+        var B = document.getElementById("B").value;
+        var dB = document.getElementById("dB").value;
+
+        var Experimental = {
+            x: [A],
+            y: [1],
+            error_x: {
+                type: 'constant',
+                value: dA
+            },
+            name: 'Experimental Value',
+            mode: 'markers',
+            type: 'scatter'
+        }
+        var Theoretical = {
+            x: [B],
+            y: [2],
+            error_x: {
+                type:'constant',
+                value: dB
+            },
+            name: 'Theoretical Value',
+            mode: 'markers',
+            type: 'scatter'    
+        }
+        var layout = {
+            title: {
+                text: 'Measurements and Their Uncertainties'
+            },
+            xaxis: {
+                showgird: false,
+                zeroline: false
+            },
+            yaxis: {
+                showgrid: false,
+                zeroline: false,
+                visible: false
+            }
+        };
+        var data = [Experimental, Theoretical];
+        Plotly.newPlot('myDiv', data, layout);
+    }
+</script>
+</html>
